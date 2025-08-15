@@ -2,7 +2,7 @@
   
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mati</groupId>
-  <artifactId>hws</artifactId>
+  <artifactId>bme680</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <build>
@@ -23,10 +23,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.5.0</version>
             <configuration>
-                <mainClass>hws.MainLauncher</mainClass>
-                <arguments>
-                    <argument>300</argument> <!-- Interval -->
-                </arguments>
+                <mainClass>bme680.MainLauncher</mainClass>
             </configuration>
         </plugin>
         
