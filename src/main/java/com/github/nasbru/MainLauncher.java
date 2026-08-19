@@ -20,7 +20,7 @@ public class MainLauncher {
 		
 		Context pi4j = Pi4J.newAutoContext();
 		Config config = new Config();
-		int interval = Integer.parseInt(config.getAppInterval());
+		int interval = config.getAppInterval();
 		boolean bme680Enabled = config.isBme680Enabled();
 		boolean pms7003Enabled = config.isPms7003Enabled();
 		

@@ -43,8 +43,8 @@ public class Config {
 		return Boolean.parseBoolean(properties.getProperty("pms7003.enabled", "true"));
 	}
 	
-	public String getAppInterval() {
-		return properties.getProperty("app.interval", "30");
+	public int getAppInterval() {
+		return Integer.parseInt(properties.getProperty("app.interval", "30"));
 	}
 
 	public String getMqttBroker() {
