@@ -39,8 +39,32 @@ public class Config {
 		return Boolean.parseBoolean(properties.getProperty("bme680.enabled", "true"));
 	}
 	
+	public boolean isPmsEnabled() {
+		String val = properties.getProperty("pms.enabled");
+		if (val != null) {
+			return Boolean.parseBoolean(val);
+		}
+		return isPms7003Enabled();
+	}
+
 	public boolean isPms7003Enabled() {
 		return Boolean.parseBoolean(properties.getProperty("pms7003.enabled", "true"));
+	}
+
+	public String getPmsName() {
+		return properties.getProperty("pms.name", "PMS7003");
+	}
+
+	public String getPmsDevice() {
+		String val = properties.getProperty("pms.device");
+		if (val != null) {
+			return val;
+		}
+		return getPms7003Device();
+	}
+
+	public String getPms7003Device() {
+		return properties.getProperty("pms7003.device", "/dev/ttyS0");
 	}
 	
 	public int getAppInterval() {
@@ -77,7 +101,4 @@ public class Config {
 		return Float.parseFloat(properties.getProperty("bme680.pressure.offset", "0"));
 	}
 
-	public String getPms7003Device() {
-		return properties.getProperty("pms7003.device", "/dev/ttyS0");
-	}
 }

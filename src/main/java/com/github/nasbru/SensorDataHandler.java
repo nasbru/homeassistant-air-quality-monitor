@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.nasbru.measurements.Measurement;
-import com.github.nasbru.sensors.Sensor;
 
 public class SensorDataHandler implements SensorListener {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataHandler.class);
