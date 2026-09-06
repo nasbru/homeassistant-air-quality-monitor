@@ -85,14 +85,12 @@ public class PMSensorReader implements AutoCloseable {
 			future.cancel(true);
 			future = null;
 		}
-		if (scheduler != null) {
-			scheduler.shutdownNow();
-		}
-		sensor.close();
+		scheduler.shutdownNow();
 	}
 
 	@Override
 	public void close() {
 		stop();
+		sensor.close();
 	}
 }
