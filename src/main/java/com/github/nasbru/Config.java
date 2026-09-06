@@ -38,7 +38,11 @@ public class Config {
 	public boolean isBme680Enabled() {
 		return Boolean.parseBoolean(properties.getProperty("bme680.enabled", "true"));
 	}
-	
+
+	public String getBme680Name() {
+		return properties.getProperty("bme680.name", "BME680");
+	}
+
 	public boolean isPmsEnabled() {
 		String val = properties.getProperty("pms.enabled");
 		if (val != null) {

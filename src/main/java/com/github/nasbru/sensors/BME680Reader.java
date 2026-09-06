@@ -29,7 +29,7 @@ public class BME680Reader implements Runnable, AutoCloseable {
 	private int interval;
 	private ProcessBuilder builder;
 	private ArrayList<SensorListener> listeners;
-	private ScheduledExecutorService scheduler;
+	private final ScheduledExecutorService scheduler;
 	private ScheduledFuture<?> future;
 	private Process process;
 
@@ -135,11 +135,6 @@ public class BME680Reader implements Runnable, AutoCloseable {
 		}
 	}
 
-	@Override
-	public void close() {
-		stopReading();
-	}
-
 	public void stopReading() {
 		continueReading = false;
 
@@ -160,8 +155,11 @@ public class BME680Reader implements Runnable, AutoCloseable {
 			}
 			process = null;
 		}
-		if (scheduler != null) {
-			scheduler.shutdownNow();
-		}
+	}
+
+	@Override
+	public void close() {
+		stopReading();
+		scheduler.shutdownNow();
 	}
 }

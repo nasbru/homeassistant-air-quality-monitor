@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.nasbru.measurements.Measurement;
 
-public class SensorDataHandler implements SensorListener {
+public class SensorDataHandler implements SensorListener, AutoCloseable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataHandler.class);
 	private static final String PUB = "_publisher";
 	private static final String SUFFIX = "_1";
@@ -235,5 +235,10 @@ public class SensorDataHandler implements SensorListener {
 		} catch (MqttException e) {
 			LOGGER.warn("Error while disconnecting MQTT client", e);
 		}
+	}
+
+	@Override
+	public void close() {
+		disconnect();
 	}
 }
