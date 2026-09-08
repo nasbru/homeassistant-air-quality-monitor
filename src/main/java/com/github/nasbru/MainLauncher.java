@@ -38,12 +38,15 @@ public class MainLauncher {
 				Thread.currentThread().interrupt();
 			}
 		}));
+		
+		String bme680Name = config.getBme680Name();
+		String pmsName = config.getPmsName();
 
 		try (
-			SensorDataHandler bme680DataHandler = bme680Enabled ? new SensorDataHandler(config.getBme680Name()) : null;
-			SensorDataHandler pmsDataHandler = pmsEnabled ? new SensorDataHandler(config.getPmsName()) : null;
+			SensorDataHandler bme680DataHandler = bme680Enabled ? new SensorDataHandler(bme680Name) : null;
+			SensorDataHandler pmsDataHandler = pmsEnabled ? new SensorDataHandler(pmsName) : null;
 			BME680Reader bme680Reader = bme680Enabled ? new BME680Reader(interval, config) : null;
-			PMSensorReader pmsReader = pmsEnabled ? new PMSensorReader(config.getPmsName(), interval, config.getPmsDevice()) : null
+			PMSensorReader pmsReader = pmsEnabled ? new PMSensorReader(pmsName, interval, config.getPmsDevice()) : null
 		) {
 			if (bme680Enabled) {
 				bme680DataHandler.setMqttConfig(broker, prefix);
@@ -59,8 +62,7 @@ public class MainLauncher {
 				pmsReader.addListener(pmsDataHandler);
 				pmsReader.start();
 			}
-
-			// Wait for shutdown signal
+			
 			shutdownLatch.await();
 
 		} catch (InterruptedException e) {
