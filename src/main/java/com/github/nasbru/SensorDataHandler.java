@@ -84,8 +84,8 @@ public class SensorDataHandler implements SensorListener, AutoCloseable {
 	}
 
 	public void setMqttConfig(String brokerUrl, String discoveryPrefix) {
-		this.brokerUrl = brokerUrl == null ? "tcp://localhost:1883" : brokerUrl;
-		this.discoveryPrefix = discoveryPrefix == null ? "homeassistant" : discoveryPrefix;
+		this.brokerUrl = brokerUrl;
+		this.discoveryPrefix = discoveryPrefix;
 	}
 
 	@Override

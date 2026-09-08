@@ -80,7 +80,7 @@ public class Config {
 	}
 
 	public String getMqttDiscoveryPrefix() {
-		return properties.getProperty("mqtt.discovery_prefix");
+		return properties.getProperty("mqtt.discovery_prefix", "homeassistant");
 	}
 	/*
 	 * public String getClientId(String sensorName) { return
