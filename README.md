@@ -20,8 +20,8 @@ Supports the **BME680** sensor (temperature, humidity, pressure, IAQ, CO₂, VOC
 ## Requirements
 
 ### Hardware
-- **BME680** sensor connected via I2C *(optional)*
-- **Plantower PMS** particulate sensor (e.g. PMS7003, PMS5003) connected via serial port *(optional)*
+- **BME680** sensor connected via I2C
+- **Plantower PMS** particulate sensor (e.g. PMS7003, PMS5003) connected via serial port
 - A Linux-based device (e.g. Raspberry Pi)
 
 ### Software
