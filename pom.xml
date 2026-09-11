@@ -68,7 +68,7 @@
 		<dependency>
             <groupId>com.github.nasbru</groupId>
             <artifactId>plantower-pms-java</artifactId>
-            <version>v0.1.0</version>
+            <version>0.1.0</version>
         </dependency>
 
 		<dependency>
