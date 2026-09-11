@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 public class Config {
 	private static final Path DEFAULT_PATH = Paths.get("data/config.properties");
-	private static final String SENSOR_PREFIX = "sensor.";
 	private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 	private final Properties properties = new Properties();
 	private final Path path;
@@ -44,15 +43,7 @@ public class Config {
 	}
 
 	public boolean isPmsEnabled() {
-		String val = properties.getProperty("pms.enabled");
-		if (val != null) {
-			return Boolean.parseBoolean(val);
-		}
-		return isPms7003Enabled();
-	}
-
-	public boolean isPms7003Enabled() {
-		return Boolean.parseBoolean(properties.getProperty("pms7003.enabled", "true"));
+		return Boolean.parseBoolean(properties.getProperty("pms.enabled", "true"));
 	}
 
 	public String getPmsName() {
@@ -60,15 +51,7 @@ public class Config {
 	}
 
 	public String getPmsDevice() {
-		String val = properties.getProperty("pms.device");
-		if (val != null) {
-			return val;
-		}
-		return getPms7003Device();
-	}
-
-	public String getPms7003Device() {
-		return properties.getProperty("pms7003.device", "/dev/ttyS0");
+		return properties.getProperty("pms.device", "/dev/ttyS0");
 	}
 	
 	public int getAppInterval() {
@@ -82,16 +65,6 @@ public class Config {
 	public String getMqttDiscoveryPrefix() {
 		return properties.getProperty("mqtt.discovery_prefix", "homeassistant");
 	}
-	/*
-	 * public String getClientId(String sensorName) { return
-	 * properties.getProperty("mqtt." + sensorName + ".clientId"); }
-	 * 
-	 * public String getBaseTopic(String sensorName) { return
-	 * properties.getProperty("mqtt." + sensorName + ".baseTopic"); }
-	 * 
-	 * public String getNodeId(String sensorName) { return
-	 * properties.getProperty("mqtt." + sensorName + ".node_id"); }
-	 */
 
 	public float getBme680TemperatureOffset() {
 		return Float.parseFloat(properties.getProperty("bme680.temperature.offset", "0"));
