@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.nasbru.PMSensor;
-import com.github.nasbru.SensorListener;
+import com.github.nasbru.mqtt.SensorListener;
 import com.github.nasbru.measurements.Measurement;
 import com.github.nasbru.measurements.PM10;
 import com.github.nasbru.measurements.PM1_0;

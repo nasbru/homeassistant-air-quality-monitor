@@ -6,6 +6,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.nasbru.config.Config;
+import com.github.nasbru.mqtt.MqttSensorPublisher;
 import com.github.nasbru.sensors.BME680Reader;
 import com.github.nasbru.sensors.PMSensorReader;
 
@@ -43,23 +45,23 @@ public class MainLauncher {
 		String pmsName = config.getPmsName();
 
 		try (
-			SensorDataHandler bme680DataHandler = bme680Enabled ? new SensorDataHandler(bme680Name) : null;
-			SensorDataHandler pmsDataHandler = pmsEnabled ? new SensorDataHandler(pmsName) : null;
+			MqttSensorPublisher bme680Publisher = bme680Enabled ? new MqttSensorPublisher(bme680Name) : null;
+			MqttSensorPublisher pmsPublisher = pmsEnabled ? new MqttSensorPublisher(pmsName) : null;
 			BME680Reader bme680Reader = bme680Enabled ? new BME680Reader(interval, config) : null;
 			PMSensorReader pmsReader = pmsEnabled ? new PMSensorReader(pmsName, interval, config.getPmsDevice()) : null
 		) {
 			if (bme680Enabled) {
-				bme680DataHandler.setMqttConfig(broker, prefix);
-				bme680DataHandler.initMqtt();
-				bme680Reader.addListener(bme680DataHandler);
+				bme680Publisher.setMqttConfig(broker, prefix);
+				bme680Publisher.initMqtt();
+				bme680Reader.addListener(bme680Publisher);
 				Thread bme680Thread = new Thread(bme680Reader);
 				bme680Thread.start();
 			}
 
 			if (pmsEnabled) {
-				pmsDataHandler.setMqttConfig(broker, prefix);
-				pmsDataHandler.initMqtt();
-				pmsReader.addListener(pmsDataHandler);
+				pmsPublisher.setMqttConfig(broker, prefix);
+				pmsPublisher.initMqtt();
+				pmsReader.addListener(pmsPublisher);
 				pmsReader.start();
 			}
 			

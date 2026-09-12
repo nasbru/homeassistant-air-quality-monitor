@@ -1,4 +1,4 @@
-package com.github.nasbru;
+package com.github.nasbru.config;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -5,8 +5,8 @@ import com.github.nasbru.measurements.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.nasbru.Config;
-import com.github.nasbru.SensorListener;
+import com.github.nasbru.config.Config;
+import com.github.nasbru.mqtt.SensorListener;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

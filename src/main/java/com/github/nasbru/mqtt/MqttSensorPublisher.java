@@ -1,4 +1,4 @@
-package com.github.nasbru;
+package com.github.nasbru.mqtt;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import com.github.nasbru.measurements.Measurement;
 
-public class SensorDataHandler implements SensorListener, AutoCloseable {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataHandler.class);
+public class MqttSensorPublisher implements SensorListener, AutoCloseable {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MqttSensorPublisher.class);
 	private static final String PUB = "_publisher";
 	private static final String SUFFIX = "_1";
 	private static final String BASE = "home/";
@@ -45,7 +45,7 @@ public class SensorDataHandler implements SensorListener, AutoCloseable {
 		mqtt.bme680.baseTopic = home/bme680_1
 		mqtt.bme680.node_id = bme680_1
 	 */
-	public SensorDataHandler(String sensorName) {
+	public MqttSensorPublisher(String sensorName) {
 		this.sensorName = sensorName;
 		this.nodeId = sensorName + SUFFIX;
 		this.baseTopic = BASE + sensorName + SUFFIX;
