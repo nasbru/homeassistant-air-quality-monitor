@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.nasbru.measurements.Measurement;
+import com.github.nasbru.measurements.MeasurementType;
 
 public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MqttSensorPublisher.class);
@@ -103,7 +104,7 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 		try {
 			for (Measurement measurement : m) {
 				if (measurement != null) {
-					String measurementType = measurement.getName().toLowerCase();
+					String measurementType = measurement.getType().getName();
 					publishValue(measurementType, formatValue(measurement.getValue()));
 				}
 			}
@@ -148,9 +149,10 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 		
 		for (Measurement m : measurements) {
 			if (m != null) {
-				String type = m.getName().toLowerCase();
-				String displayName = capitalizeFirstLetter(m.getName());
-				String deviceClass = getDeviceClass(type);
+				MeasurementType mType = m.getType();
+				String type = mType.getName();
+				String displayName = mType.getDisplayName();
+				String deviceClass = mType.getDeviceClass();
 				
 				String topic = discoveryPrefix + "/sensor/" + nodeId + "_" + type + "/config";
 				String payload = buildDiscoveryPayload(displayName, sensorName, type, nodeId, m, deviceClass, deviceJson);
@@ -183,24 +185,6 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 		sb.append("}");
 		
 		return sb.toString();
-	}
-
-	private String getDeviceClass(String measurementType) {
-		return switch(measurementType.toLowerCase()) {
-			case "temperature" -> "temperature";
-			case "humidity" -> "humidity";
-			case "pressure" -> "pressure";
-			case "pm1_0", "pm2_5", "pm10" -> "pm25";
-			case "co2" -> "carbon_dioxide";
-			default -> "";
-		};
-	}
-
-	private String capitalizeFirstLetter(String str) {
-		if (str == null || str.isEmpty()) {
-			return str;
-		}
-		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
 	}
 
 	private String formatValue(BigDecimal value) {

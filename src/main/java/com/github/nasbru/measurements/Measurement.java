@@ -14,6 +14,10 @@ public abstract class Measurement {
 		this.value = value.setScale(type.getScale(), RoundingMode.HALF_UP);
 	}
 
+	public MeasurementType getType() {
+		return type;
+	}
+
 	public String getName() {
 		return type.getName();
 	}
@@ -26,20 +30,10 @@ public abstract class Measurement {
 		return type.getUnit();
 	}
 
-	public int getDailyNorm() {
-		if (!hasNorm())
-			throw new IllegalStateException("No norm defined for " + type.getName() + ".");
-		return type.getNorm().daily();
-	}
-
-	public int getAnnualNorm() {
-		if (!hasNorm())
-			throw new IllegalStateException("No norm defined for " + type.getName() + ".");
-		return type.getNorm().annual();
-	}
-
 	public int percentValueToNorm() {
-		float result = (value.floatValue() / getDailyNorm()) * 100;
+		if (!hasNorm())
+			throw new IllegalStateException("No norm defined for " + type.getName() + ".");
+		float result = (value.floatValue() / type.getNorm().daily()) * 100;
 		return (int) result;
 	}
 
