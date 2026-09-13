@@ -105,7 +105,7 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 			for (Measurement measurement : m) {
 				if (measurement != null) {
 					String measurementType = measurement.getType().getName();
-					publishValue(measurementType, formatValue(measurement.getValue()));
+					publishValue(measurementType, formatValue(measurement.getValue(), measurement.getType().getScale()));
 				}
 			}
 		} catch (MqttException ex) {
@@ -187,12 +187,10 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 		return sb.toString();
 	}
 
-	private String formatValue(BigDecimal value) {
+	private String formatValue(BigDecimal value, int scale) {
 		if (value == null)
 			return "0";
-		// wymuszenie 2 miejsc po przecinku (np. 25.10). Jeśli nie chcesz, użyj
-		// value.toPlainString()
-		return value.setScale(2, RoundingMode.HALF_UP).toPlainString();
+		return value.setScale(scale, RoundingMode.HALF_UP).toPlainString();
 	}
 
 	private void tryReconnect() {
