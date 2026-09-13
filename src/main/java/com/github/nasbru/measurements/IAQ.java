@@ -74,7 +74,7 @@ public class IAQ extends Measurement {
 
 	@Override
 	public String toString() {
-		String result = String.format("%s: %d (%d)", getType(), getValue().intValue(), accuracy.getAccValue());
+		String result = String.format("%s: %d (%d)", getName(), getValue().intValue(), accuracy.getAccValue());
 		return result;
 	}
 }

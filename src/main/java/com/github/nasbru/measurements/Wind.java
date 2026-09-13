@@ -16,7 +16,7 @@ public class Wind extends Measurement {
     
     @Override
     public String toString() {
-        return getType() + ": " + getValue() + getUnit() + " " + direction.name();
+        return getName() + ": " + getValue() + getUnit() + " " + direction.name();
     }
 
     private enum Direction {

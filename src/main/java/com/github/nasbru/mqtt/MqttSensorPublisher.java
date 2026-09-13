@@ -40,10 +40,6 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 	 * @param clientId  client id for MQTT
 	 * @param baseTopic e.g. "home/bme680_1" (no trailing slash)
 	 * @param sensor    Sensor instance to get measurements from
-	 * 
-	 * mqtt.bme680.clientId = bme680_publisher_1
-		mqtt.bme680.baseTopic = home/bme680_1
-		mqtt.bme680.node_id = bme680_1
 	 */
 	public MqttSensorPublisher(String sensorName) {
 		this.sensorName = sensorName;
@@ -107,7 +103,7 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 		try {
 			for (Measurement measurement : m) {
 				if (measurement != null) {
-					String measurementType = measurement.getType().toLowerCase();
+					String measurementType = measurement.getName().toLowerCase();
 					publishValue(measurementType, formatValue(measurement.getValue()));
 				}
 			}
@@ -149,13 +145,11 @@ public class MqttSensorPublisher implements SensorListener, AutoCloseable {
 				LOGGER.warn("Failed to publish discovery topic {}: {}", topic, e.getMessage());
 			}
 		};
-
-		// Dynamicznie publikuj discovery dla każdego pomiaru
 		
 		for (Measurement m : measurements) {
 			if (m != null) {
-				String type = m.getType().toLowerCase();
-				String displayName = capitalizeFirstLetter(m.getType());
+				String type = m.getName().toLowerCase();
+				String displayName = capitalizeFirstLetter(m.getName());
 				String deviceClass = getDeviceClass(type);
 				
 				String topic = discoveryPrefix + "/sensor/" + nodeId + "_" + type + "/config";

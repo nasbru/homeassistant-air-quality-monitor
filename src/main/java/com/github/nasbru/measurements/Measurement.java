@@ -14,7 +14,7 @@ public abstract class Measurement {
 		this.value = value.setScale(type.getScale(), RoundingMode.HALF_UP);
 	}
 
-	public String getType() {
+	public String getName() {
 		return type.getName();
 	}
 
