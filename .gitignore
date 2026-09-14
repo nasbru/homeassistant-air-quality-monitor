@@ -1,0 +1,7 @@
+/target/
+.agents/
+.classpath
+.project
+.settings/
+dependency-reduced-pom.xml
+diff.txt
