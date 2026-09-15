@@ -94,9 +94,11 @@ This creates `target/homeassistant-air-quality-monitor-<version>.jar` — a fat 
 
 ### Deploying the application
 
-The application expects the `data/` folder (containing `config.properties` and, if using BME680, `bsec_bme680`) to reside in its working directory. 
+The application expects the `data/` folder (containing `config.properties` and, if using BME680, `bsec_bme680`) to reside in its working directory.
 
-After building, **copy the `data/` directory into the folder where the JAR file will be located and executed**:
+If `data/config.properties` is missing at startup, the application **automatically creates the `data/` directory and generates a default configuration file**.
+
+You can deploy the JAR to your target directory:
 
 ```bash
 # Example: Deploying to /opt/air-monitor
@@ -108,8 +110,9 @@ sudo cp -r data /opt/air-monitor/
 cp -r data target/
 ```
 
-> [!IMPORTANT]
-> Always ensure that the user running the application has read permissions for `data/config.properties` and execute permissions for `data/bsec_bme680` (`chmod +x data/bsec_bme680`).
+> [!NOTE]
+> If you start the application without copying `data/`, the directory and `data/config.properties` will be initialized automatically on the first run.
+> If using the **BME680** sensor, remember to copy the compiled `bsec_bme680` binary into `data/`. The application will automatically attempt to grant execute permissions (`chmod +x`), but if the file is owned by root, permissions must be granted manually.
 
 ---
 

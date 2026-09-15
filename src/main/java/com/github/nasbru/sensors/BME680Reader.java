@@ -37,6 +37,9 @@ public class BME680Reader implements Runnable, AutoCloseable {
 	private final float humidOffset;
 	private final float pressOffset;
 
+	private final File dataDir;
+	private final File bsecFile;
+
 	public BME680Reader(int seconds, Config config) {
 		interval = seconds;
 		this.tempOffset = config.getBme680TemperatureOffset();
@@ -48,13 +51,30 @@ public class BME680Reader implements Runnable, AutoCloseable {
 		lastLine = LINE0;
 
 		String programDir = System.getProperty("user.dir");
-		File dataDir = new File(programDir, "data");
+		dataDir = new File(programDir, "data");
+		bsecFile = new File(dataDir, "bsec_bme680");
 		builder = new ProcessBuilder("./bsec_bme680");
 		builder.directory(dataDir);
 	}
 
 	@Override
 	public void run() {
+		if (!bsecFile.exists()) {
+			LOGGER.error("Binary '{}' was not found in '{}'. Please compile bsec_bme680 and place it in the data directory (see README.md).",
+					bsecFile.getName(), dataDir.getAbsolutePath());
+			return;
+		}
+
+		if (!bsecFile.canExecute()) {
+			LOGGER.info("Binary '{}' is not executable. Attempting to set execute permission...", bsecFile.getName());
+			boolean success = bsecFile.setExecutable(true);
+			if (!success || !bsecFile.canExecute()) {
+				LOGGER.error("Failed to set execute permission on '{}'. If the file is owned by root, run: sudo chmod +x {}",
+						bsecFile.getName(), bsecFile.getAbsolutePath());
+				return;
+			}
+		}
+
 		try {
 			LOGGER.debug("Starting BME680Reader run method.");
 			process = builder.start();

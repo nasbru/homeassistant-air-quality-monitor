@@ -25,12 +25,38 @@ public class Config {
 		this(DEFAULT_PATH);
 	}
 
+	private void ensureConfigExists() {
+		if (Files.exists(path)) {
+			return;
+		}
+
+		try {
+			Path parent = path.getParent();
+			if (parent != null && !Files.exists(parent)) {
+				Files.createDirectories(parent);
+				LOGGER.info("Created configuration directory: {}", parent.toAbsolutePath());
+			}
+
+			try (InputStream defaultIn = getClass().getResourceAsStream("/default-config.properties")) {
+				if (defaultIn != null) {
+					Files.copy(defaultIn, path);
+					LOGGER.info("Created default config file at: {}", path.toAbsolutePath());
+				} else {
+					LOGGER.warn("Default config template not found in classpath resources.");
+				}
+			}
+		} catch (IOException e) {
+			LOGGER.error("Failed to create default config file at: {}", path.toAbsolutePath(), e);
+		}
+	}
+
 	private void load() {
+		ensureConfigExists();
 		try (InputStream in = Files.newInputStream(path)) {
 			properties.clear();
 			properties.load(in);
 		} catch (IOException e) {
-			LOGGER.error("Error while reading config file.");
+			LOGGER.error("Error while reading config file: {}", path.toAbsolutePath(), e);
 		}
 	}
 	
