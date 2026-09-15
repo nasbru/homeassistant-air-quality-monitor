@@ -67,11 +67,16 @@ The BME680 sensor requires the `bsec_bme680` binary, which is built from the off
    ./make.sh
    ```
 
-6. **Copy the resulting binary** to the `data/` directory of this project:
+6. **Copy the resulting binary** to the `data/` directory of this project (or your deployment directory):
 
    ```bash
-   cp bsec_bme680 /opt/air-monitor/data/
-   chmod +x /opt/air-monitor/data/bsec_bme680
+   # Copy to this repository's data/ directory
+   cp bsec_bme680 /path/to/homeassistant-air-quality-monitor/data/
+   chmod +x /path/to/homeassistant-air-quality-monitor/data/bsec_bme680
+
+   # Or directly to a deployment directory (e.g. /opt/air-monitor/data/)
+   # cp bsec_bme680 /opt/air-monitor/data/
+   # chmod +x /opt/air-monitor/data/bsec_bme680
    ```
 
 > [!NOTE]
@@ -86,6 +91,25 @@ mvn package
 ```
 
 This creates `target/homeassistant-air-quality-monitor-<version>.jar` — a fat JAR with all dependencies included.
+
+### Deploying the application
+
+The application expects the `data/` folder (containing `config.properties` and, if using BME680, `bsec_bme680`) to reside in its working directory. 
+
+After building, **copy the `data/` directory into the folder where the JAR file will be located and executed**:
+
+```bash
+# Example: Deploying to /opt/air-monitor
+sudo mkdir -p /opt/air-monitor
+sudo cp target/homeassistant-air-quality-monitor-*.jar /opt/air-monitor/homeassistant-air-quality-monitor.jar
+sudo cp -r data /opt/air-monitor/
+
+# Or if you intend to run the JAR directly from the target/ directory:
+cp -r data target/
+```
+
+> [!IMPORTANT]
+> Always ensure that the user running the application has read permissions for `data/config.properties` and execute permissions for `data/bsec_bme680` (`chmod +x data/bsec_bme680`).
 
 ---
 
